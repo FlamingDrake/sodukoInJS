@@ -7,6 +7,8 @@ function generate() {
     sodokuDiv.innerHTML = "";
     let sodokuMatrix = document.createElement("table");
 
+    let solvedSoduko = generateValidSoduko();
+
     for(let i = 0; i < totalRows; i++){
         let row = document.createElement("tr");
 
@@ -22,4 +24,10 @@ function generate() {
         sodokuMatrix.appendChild(row);
     }
     sodokuDiv.appendChild(sodokuMatrix);
+}
+
+function generateValidSoduko() {
+    let matix = [9][9];
+
+
 }
