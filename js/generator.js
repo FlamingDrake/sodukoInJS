@@ -9,11 +9,11 @@ function generate() {
 
     let solvedSoduko = generateValidSoduko();
 
-    for(let i = 0; i < totalRows; i++){
+    for (let i = 0; i < totalRows; i++) {
         let row = document.createElement("tr");
 
 
-        for(let j = 0; j < totalColumns; j++){
+        for (let j = 0; j < totalColumns; j++) {
             let cell = document.createElement("td");
             //TODO Generate a solvable sodoku here. Also make sure the cells that generate with empty cells are changeable.
             let cellText = document.createTextNode("0");
@@ -50,7 +50,11 @@ function validateSudoko(){
 }
 
 function generateValidSoduko() {
-    let matix = [9][9];
+    let availableNumbers = generateNumbers();
+}
+
+function generateNumbers() {
 
 
+    return undefined;
 }
