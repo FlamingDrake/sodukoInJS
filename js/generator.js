@@ -54,7 +54,11 @@ function generateValidSoduko() {
 }
 
 function generateNumbers() {
-
-
-    return undefined;
+    let arrayNumbers = [];
+    for (let i = 1; i <= totalRows; i++){
+        for(let j = 1; j <= totalColumns; j++){
+            arrayNumbers.push(j);
+        }
+    }
+    return arrayNumbers;
 }
