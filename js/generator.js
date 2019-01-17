@@ -98,5 +98,13 @@ function generateNumbers() {
             arrayNumbers.push(j);
         }
     }
+    for (let i = 1; i < arrayNumbers.length; i++){
+        let randomIndex = Math.floor(Math.random() * (i+1));
+        let randomValue = arrayNumbers[randomIndex];
+        arrayNumbers[randomIndex] = arrayNumbers[i];
+        arrayNumbers[i] = randomValue;
+    }
+
+
     return arrayNumbers;
 }
