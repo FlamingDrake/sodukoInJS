@@ -1,4 +1,3 @@
-
 const totalColumns = 9;
 const totalRows = 9;
 
@@ -16,30 +15,39 @@ function generate() {
         for (let j = 0; j < totalColumns; j++) {
             let cell = document.createElement("td");
             //TODO Generate a solvable sodoku here. Also make sure the cells that generate with empty cells are changeable.
-            let cellText = document.createTextNode("0");
-            cell.setAttribute("id", "cell"+i+"."+j);
+            //let cellText = document.createTextNode("0");
+            cell.setAttribute("id", "cell" + i + "." + j);
 
-            cell.appendChild(cellText);
+            //cell.appendChild(cellText);
             row.appendChild(cell);
         }
         sodokuMatrix.appendChild(row);
     }
     sodokuDiv.appendChild(sodokuMatrix);
+
+
+    sodokuMatrix.childNodes.forEach(function (row) {
+            row.childNodes.forEach(function (cell) {
+                let cellText = document.createTextNode(solvedSoduko.pop());
+                cell.appendChild(cellText);
+            })
+        }
+    );
 }
-function validateSudoko(){
+
+function validateSudoko() {
     let validCells = true;
     let value = 0;
-    for(let i = 0; i < totalRows; i++){
-        for(let j = 0; j < totalColumns; j++){
-            value = document.getElementById("cell"+i+"."+j).value;
+    for (let i = 0; i < totalRows; i++) {
+        for (let j = 0; j < totalColumns; j++) {
+            value = document.getElementById("cell" + i + "." + j).value;
             console.log(value);
             // check row
-            for(let k = i; k < totalRows; k++){
-                if(document.getElementById("cell"+k+"."+j).value == value){
-                    console.log("check: " + document.getElementById("cell"+k+"."+j).value);
+            for (let k = i; k < totalRows; k++) {
+                if (document.getElementById("cell" + k + "." + j).value === value) {
+                    console.log("check: " + document.getElementById("cell" + k + "." + j).value);
                     validCells = false;
-                }
-                else{
+                } else {
 
                 }
             }
@@ -51,6 +59,36 @@ function validateSudoko(){
 
 function generateValidSoduko() {
     let availableNumbers = generateNumbers();
+
+    let sortedNumbers = sortNumbers(availableNumbers);
+
+    let numberSet = [];
+
+    for (let i = 0; i < totalRows * totalColumns; i++) {
+        numberSet.push(sortedNumbers[i]);
+    }
+
+    return Array.from(numberSet);
+}
+
+function allowedInsert(t, listOfNumbers) {
+
+    return true;
+}
+
+function sortNumbers(availableNumbers) {
+    let sortedNumbers = [];
+
+    while (availableNumbers.length > 0) {
+        let tempNumber = availableNumbers.pop();
+        if (allowedInsert(tempNumber, sortedNumbers)) {
+            sortedNumbers.push(tempNumber);
+        } else {
+            availableNumbers.push(tempNumber);
+        }
+
+    }
+    return sortedNumbers;
 }
 
 function generateNumbers() {
