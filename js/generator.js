@@ -72,7 +72,18 @@ function generateValidSoduko() {
 }
 
 function allowedInsert(t, listOfNumbers) {
+    let row =  listOfNumbers.length / 9;
+    let col = listOfNumbers.length % 9;
 
+    for (let i = 0; i < totalRows; i++){
+        console.log(parseInt(row) + " : " + ((Math.floor(row) * totalRows) + i) + " : " + listOfNumbers.length);
+        if(listOfNumbers[(Math.floor(row) * totalRows) + i] === t){
+            return false;
+        }
+        if(listOfNumbers[i * totalRows + col] ===t){
+            return false;
+        }
+    }
     return true;
 }
 
@@ -81,10 +92,12 @@ function sortNumbers(availableNumbers) {
 
     while (availableNumbers.length > 0) {
         let tempNumber = availableNumbers.pop();
+
         if (allowedInsert(tempNumber, sortedNumbers)) {
+            console.log(availableNumbers + " : " + sortedNumbers.length);
             sortedNumbers.push(tempNumber);
         } else {
-            availableNumbers.push(tempNumber);
+            sortedNumbers.push("0");
         }
 
     }
