@@ -76,7 +76,6 @@ function allowedInsert(t, listOfNumbers) {
     let col = listOfNumbers.length % 9;
 
     for (let i = 0; i < totalRows; i++){
-        console.log(parseInt(row) + " : " + ((Math.floor(row) * totalRows) + i) + " : " + listOfNumbers.length);
         if(listOfNumbers[(Math.floor(row) * totalRows) + i] === t){
             return false;
         }
