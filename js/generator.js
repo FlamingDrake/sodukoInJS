@@ -1,6 +1,9 @@
 const totalColumns = 9;
 const totalRows = 9;
 
+let ugly = [];
+
+
 function generate() {
     let sodokuDiv = document.getElementById("generateMe");
     sodokuDiv.innerHTML = "";
@@ -28,7 +31,16 @@ function generate() {
 
     sodokuMatrix.childNodes.forEach(function (row) {
             row.childNodes.forEach(function (cell) {
-                let cellText = document.createTextNode(solvedSoduko.pop());
+                let difficulty = 0.5;
+                let random = Math.random();
+                let tempNumber = solvedSoduko.pop();
+                let cellText;
+                if(random>difficulty){
+                    cellText = document.createTextNode(tempNumber);
+                } else {
+                    cellText = document.createElement("INPUT");
+                    cellText.setAttribute("type", "text");
+                }
                 cell.appendChild(cellText);
             })
         }
@@ -60,47 +72,107 @@ function validateSudoko() {
 function generateValidSoduko() {
     let availableNumbers = generateNumbers();
 
-    let sortedNumbers = sortNumbers(availableNumbers);
+    let sortedNumbers = [];
+
+    try{
+        sortNumbers(availableNumbers, sortedNumbers);
+    } catch (e) {
+        let errMsg = document.createTextNode("Try again, soduko failed to generate.");
+        let sodokuDiv = document.getElementById("generateMe");
+        sodokuDiv.innerHTML = "";
+        sodokuDiv.appendChild(errMsg);
+    }
 
     let numberSet = [];
 
+
     for (let i = 0; i < totalRows * totalColumns; i++) {
-        numberSet.push(sortedNumbers[i]);
+        numberSet.push(ugly[i]);
     }
 
-    return Array.from(numberSet);
+    return numberSet;
 }
 
-function allowedInsert(t, listOfNumbers) {
+function allowedNumbers(listOfNumbers) {
     let row =  listOfNumbers.length / 9;
     let col = listOfNumbers.length % 9;
 
+    let allowedNumbers = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+    let returnSet = new Set();
+
     for (let i = 0; i < totalRows; i++){
-        if(listOfNumbers[(Math.floor(row) * totalRows) + i] === t){
-            return false;
+        if(listOfNumbers[(Math.floor(row) * totalRows) + i]){
+            returnSet.add(listOfNumbers[(Math.floor(row) * totalRows) + i])
         }
-        if(listOfNumbers[i * totalRows + col] ===t){
-            return false;
+        if(listOfNumbers[i * totalRows + col]){
+            returnSet.add(listOfNumbers[i * totalRows + col])
+        }
+
+    }
+    let quadrantRowFirst = Math.floor(row / 3) * 3;
+    let quadrantColFirst = Math.floor(col / 3) * 3;
+
+    //TODO make this not hardcoded
+    for(let i = 0; i < 3; i++){
+        let currentRow = quadrantRowFirst + i;
+        for (let j = 0; j < 3; j++){
+            if(listOfNumbers[quadrantColFirst + j + currentRow*9]){
+                returnSet.add(listOfNumbers[quadrantColFirst + j + currentRow*9])
+            }
         }
     }
-    return true;
+
+    returnSet.forEach(number => {
+        allowedNumbers.delete(number);
+    });
+
+    return allowedNumbers;
 }
 
-function sortNumbers(availableNumbers) {
-    let sortedNumbers = [];
+function sortNumbers(availableNumbers, sortedNumbers) {
+    if(availableNumbers.length === 0){
+        return Array.from(sortedNumbers);
+    }
 
+    let tempNumber = availableNumbers.pop();
+    let options = allowedNumbers(ugly);
+
+
+    if(options.size > 0) {
+        while (!options.has(tempNumber)) {
+            availableNumbers.unshift(tempNumber);
+            tempNumber = availableNumbers.pop();
+        }
+
+        ugly.push(tempNumber);
+        sortNumbers(availableNumbers, sortedNumbers);
+    } else {
+        ugly = [];
+
+        sortNumbers(generateNumbers(), sortedNumbers)
+    }
+    /*
     while (availableNumbers.length > 0) {
         let tempNumber = availableNumbers.pop();
 
+
+
         if (allowedInsert(tempNumber, sortedNumbers)) {
-            console.log(availableNumbers + " : " + sortedNumbers.length);
+            maxTries = 0;
             sortedNumbers.push(tempNumber);
         } else {
-            sortedNumbers.push("0");
+            if(maxTries > 80){
+                break;
+            }
+            availableNumbers.unshift(tempNumber);
+            maxTries++;
+            //sortedNumbers.push("0");
         }
 
     }
     return sortedNumbers;
+    */
 }
 
 function generateNumbers() {
@@ -116,6 +188,7 @@ function generateNumbers() {
         arrayNumbers[randomIndex] = arrayNumbers[i];
         arrayNumbers[i] = randomValue;
     }
+
 
 
     return arrayNumbers;
