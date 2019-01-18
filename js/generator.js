@@ -50,21 +50,30 @@ function generate() {
 function validateSudoko() {
     let validCells = true;
     let value = 0;
+    let entry = [];
     for (let i = 0; i < totalRows; i++) {
         for (let j = 0; j < totalColumns; j++) {
-            value = document.getElementById("cell" + i + "." + j).value;
-            console.log(value);
-            // check row
-            for (let k = i; k < totalRows; k++) {
-                if (document.getElementById("cell" + k + "." + j).value === value) {
-                    console.log("check: " + document.getElementById("cell" + k + "." + j).value);
-                    validCells = false;
+            let child = document.getElementById("cell" + i + "." + j).childNodes;
+            child.forEach(text => {
+                if(!text.value){
+                    entry.push(text);
                 } else {
-
+                    entry.push(text.value)
                 }
-            }
+
+            });
+            // check row
             // check colum
             // check box
+        }
+    }
+
+    if(entry.length === 81){
+        for(let i = 0; i < entry.length; i++){
+            let validOptions = allowedNumbers(entry, i);
+            if(!validOptions.has(entry[i])){
+                console.log("FAAAAIIIILLLL")
+            }
         }
     }
 }
@@ -93,9 +102,9 @@ function generateValidSoduko() {
     return numberSet;
 }
 
-function allowedNumbers(listOfNumbers) {
-    let row =  listOfNumbers.length / 9;
-    let col = listOfNumbers.length % 9;
+function allowedNumbers(listOfNumbers, location = listOfNumbers.length) {
+    let row =  location / 9;
+    let col = location % 9;
 
     let allowedNumbers = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
