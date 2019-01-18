@@ -54,11 +54,11 @@
         }
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none;
             width: 15px;
             height: 15px;
             background: #080862;
-            cursor: pointer; /* Cursor on hover */
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -72,10 +72,14 @@
 
 <div class="slidecontainer">
     Difficulty
-    <input type="range" min="0" max="100" value="1" class="slider" id="difficultyRange">
+    <input type="range" min="0" max="100" value="50" class="slider" id="difficultyRange">
 </div>
 
 <div id="generateMe">
+
+</div>
+
+<div id="successLine">
 
 </div>
 

@@ -60,9 +60,11 @@ function validateSudoko() {
             let child = document.getElementById("cell" + i + "." + j).childNodes;
             child.forEach(text => {
                 if (!text.value) {
-                    entry.push(text);
+                    console.log(parseInt(text.nodeValue));
+                    entry.push(parseInt(text.nodeValue));
                 } else {
-                    entry.push(text.value)
+                    console.log(parseInt(text.hasChildNodes()));
+                    entry.push(parseInt(text.nodeValue))
                 }
 
             });
@@ -74,12 +76,18 @@ function validateSudoko() {
 
     if (entry.length === 81) {
         for (let i = 0; i < entry.length; i++) {
+            let temp = entry[i];
+            entry[i] = 0;
             let validOptions = allowedNumbers(entry, i);
-            if (!validOptions.has(entry[i])) {
-                console.log("FAAAAIIIILLLL")
+            if (!validOptions.has(temp)) {
+                document.getElementById("successLine").innerText = "YOU ARE DEFEATED";
+                return;
             }
+            entry[i] = temp;
         }
+        document.getElementById("successLine").innerText = "YOU ARE VICTORIOUS"
     }
+
 }
 
 function generateValidSudoku() {
@@ -110,9 +118,12 @@ function allowedNumbers(listOfNumbers, location = listOfNumbers.length) {
     let row = location / 9;
     let col = location % 9;
 
+    console.log(listOfNumbers);
+
     let allowedNumbers = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
     let returnSet = new Set();
+
 
     for (let i = 0; i < totalRows; i++) {
         if (listOfNumbers[(Math.floor(row) * totalRows) + i]) {
