@@ -18,6 +18,12 @@ function generate() {
         for (let j = 0; j < totalColumns; j++) {
             let cell = document.createElement("td");
             cell.setAttribute("id", "cell" + i + "." + j);
+            if((j+1)%3===0 && j !== totalColumns - 1){
+                cell.style.borderRight = "2px solid#000000"
+            }
+            if((i+1)%3 === 0 && i !== totalRows - 1){
+                cell.style.borderBottom = "2px solid#000000"
+            }
 
             row.appendChild(cell);
         }
@@ -28,7 +34,7 @@ function generate() {
 
     sodokuMatrix.childNodes.forEach(function (row) {
             row.childNodes.forEach(function (cell) {
-                let difficulty = 0.5;
+                let difficulty = document.getElementById("difficultyRange").value / 100;
                 let random = Math.random();
                 let tempNumber = solvedSudoku.pop();
                 let cellText;
