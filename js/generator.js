@@ -1,8 +1,6 @@
 const totalColumns = 9;
 const totalRows = 9;
 
-let ugly = [];
-
 
 function generate() {
     let sodokuDiv = document.getElementById("generateMe");
@@ -18,10 +16,10 @@ function generate() {
         for (let j = 0; j < totalColumns; j++) {
             let cell = document.createElement("td");
             cell.setAttribute("id", "cell" + i + "." + j);
-            if((j+1)%3===0 && j !== totalColumns - 1){
+            if ((j + 1) % 3 === 0 && j !== totalColumns - 1) {
                 cell.style.borderRight = "2px solid#000000"
             }
-            if((i+1)%3 === 0 && i !== totalRows - 1){
+            if ((i + 1) % 3 === 0 && i !== totalRows - 1) {
                 cell.style.borderBottom = "2px solid#000000"
             }
 
@@ -91,22 +89,20 @@ function validateSudoko() {
 function generateValidSudoku() {
     let availableNumbers = generateNumbers();
 
-    let sortedNumbers = [];
+
+    let numberSet;
+
 
     try {
-        sortNumbers(availableNumbers, sortedNumbers);
+        numberSet = sortNumbers(availableNumbers);
+
+
     } catch (e) {
         let errMsg = document.createTextNode("Try again, sudoku failed to generate.");
         let sodokuDiv = document.getElementById("generateMe");
         sodokuDiv.innerHTML = "";
         sodokuDiv.appendChild(errMsg);
-    }
-
-    let numberSet = [];
-
-
-    for (let i = 0; i < totalRows * totalColumns; i++) {
-        numberSet.push(ugly[i]);
+        return;
     }
 
     return numberSet;
@@ -150,13 +146,13 @@ function allowedNumbers(listOfNumbers, location = listOfNumbers.length) {
     return allowedNumbers;
 }
 
-function sortNumbers(availableNumbers, sortedNumbers) {
+function sortNumbers(availableNumbers, sortedNumbers = []) {
     if (availableNumbers.length === 0) {
-        return Array.from(sortedNumbers);
+        return sortedNumbers;
     }
 
     let tempNumber = availableNumbers.pop();
-    let options = allowedNumbers(ugly);
+    let options = allowedNumbers(sortedNumbers);
 
 
     if (options.size > 0) {
@@ -165,14 +161,13 @@ function sortNumbers(availableNumbers, sortedNumbers) {
             tempNumber = availableNumbers.pop();
         }
 
-        ugly.push(tempNumber);
-        sortNumbers(availableNumbers, sortedNumbers);
+        sortedNumbers.push(tempNumber);
+        return sortNumbers(availableNumbers, sortedNumbers);
     } else {
-        ugly = [];
 
         //TODO Make this not dependent on random, waiting on randomly generated string of numbers being ok is really bad :D.
 
-        sortNumbers(generateNumbers(), sortedNumbers)
+        return sortNumbers(generateNumbers())
     }
 }
 
