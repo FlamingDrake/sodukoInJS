@@ -170,6 +170,8 @@ function sortNumbers(availableNumbers, sortedNumbers) {
     } else {
         ugly = [];
 
+        //TODO Make this not dependent on random, waiting on randomly generated string of numbers being ok is really bad :D.
+
         sortNumbers(generateNumbers(), sortedNumbers)
     }
 }
