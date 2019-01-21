@@ -4,6 +4,7 @@ const totalRows = 9;
 
 function generate() {
     let sodokuDiv = document.getElementById("generateMe");
+    document.getElementById("successLine").innerHTML = "";
     sodokuDiv.innerHTML = "";
     let sodokuMatrix = document.createElement("table");
 
