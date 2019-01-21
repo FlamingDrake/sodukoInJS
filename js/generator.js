@@ -51,8 +51,6 @@ function generate() {
 }
 
 function validateSudoko() {
-    let validCells = true;
-    let value = 0;
     let entry = [];
     for (let i = 0; i < totalRows; i++) {
         for (let j = 0; j < totalColumns; j++) {
@@ -65,9 +63,6 @@ function validateSudoko() {
                 }
 
             });
-            // check row
-            // check colum
-            // check box
         }
     }
 
