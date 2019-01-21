@@ -60,11 +60,9 @@ function validateSudoko() {
             let child = document.getElementById("cell" + i + "." + j).childNodes;
             child.forEach(text => {
                 if (!text.value) {
-                    console.log(parseInt(text.nodeValue));
                     entry.push(parseInt(text.nodeValue));
                 } else {
-                    console.log(parseInt(text.hasChildNodes()));
-                    entry.push(parseInt(text.nodeValue))
+                    entry.push(parseInt(text.value))
                 }
 
             });
@@ -117,8 +115,6 @@ function generateValidSudoku() {
 function allowedNumbers(listOfNumbers, location = listOfNumbers.length) {
     let row = location / 9;
     let col = location % 9;
-
-    console.log(listOfNumbers);
 
     let allowedNumbers = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
